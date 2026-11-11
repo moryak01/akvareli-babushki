@@ -1,0 +1,19 @@
+# Локальные и служебные файлы
+node_modules/
+.netlify/
+.env
+.env.*
+
+# Исходники фотографий не нужны в репозитории и на хостинге
+photo1.jpg
+photo2.jpg
+photo3.jpg
+photo4.jpg
+photo5.jpg
+photo6.jpg
+photo7.jpg
+
+# Системное
+.DS_Store
+Thumbs.db
+desktop.ini

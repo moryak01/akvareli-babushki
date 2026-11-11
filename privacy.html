@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Политика конфиденциальности — Акварели бабушки</title>
+  <meta name="description" content="Какие данные собираются при оформлении заявки на сайте «Акварели бабушки» и как они используются.">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #121212;
+      --muted: #77736c;
+      --line: #e6e3dd;
+      --serif: "Cormorant Garamond", Georgia, serif;
+      --sans: "Inter", -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #fff;
+      color: var(--ink);
+      font-family: var(--sans);
+      font-weight: 300;
+      font-size: 15px;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    .wrap {
+      width: min(760px, 100% - 48px);
+      margin: 0 auto;
+    }
+    header {
+      border-bottom: 1px solid var(--line);
+    }
+    .header__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 22px 0;
+    }
+    .logo {
+      font-family: var(--serif);
+      font-size: 19px;
+      letter-spacing: 0.1em;
+      text-decoration: none;
+    }
+    .back {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+    }
+    main {
+      padding: clamp(40px, 7vw, 80px) 0;
+    }
+    .eyebrow {
+      font-size: 9px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    h1 {
+      margin: 10px 0 0;
+      font-family: var(--serif);
+      font-weight: 300;
+      font-size: clamp(34px, 6vw, 52px);
+      line-height: 1.05;
+    }
+    .updated {
+      margin-top: 14px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    h2 {
+      margin: 38px 0 10px;
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: 24px;
+      line-height: 1.2;
+    }
+    p, li { margin: 0 0 12px; }
+    ul {
+      margin: 0 0 12px;
+      padding-left: 20px;
+    }
+    li { margin-bottom: 6px; }
+    .note {
+      margin-top: 34px;
+      padding: 18px 20px;
+      background: #f7f5f1;
+      border: 1px solid var(--line);
+      font-size: 13.5px;
+      color: var(--muted);
+    }
+    footer {
+      padding: 24px 0;
+      border-top: 1px solid var(--line);
+      font-size: 11px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap header__inner">
+      <a class="logo" href="index.html">Акварели бабушки</a>
+      <a class="back" href="index.html">← На сайт</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <p class="eyebrow">Правовая информация</p>
+    <h1>Политика конфиденциальности</h1>
+    <p class="updated">Обновлено 12 ноября 2026 года</p>
+
+    <h2>1. Кто обрабатывает данные</h2>
+    <p>Сайт «Акварели бабушки» принимает заявки на приобретение картин. Данные заявки обрабатывает владелец сайта. Связаться можно в Telegram: <a href="https://t.me/alexgg101" target="_blank" rel="noopener">@alexgg101</a>.</p>
+
+    <h2>2. Какие данные собираются</h2>
+    <p>Только то, что вы сами указываете в форме заявки:</p>
+    <ul>
+      <li>имя или обращение;</li>
+      <li>контакт для ответа — телефон, e-mail или имя в Telegram;</li>
+      <li>комментарий к заказу, если вы его написали;</li>
+      <li>дата и время отправки заявки.</li>
+    </ul>
+    <p>Сайт не запрашивает адрес доставки, паспортные данные и платёжную информацию. Оплата и доставка обсуждаются отдельно после подтверждения заявки.</p>
+
+    <h2>3. Зачем нужны данные</h2>
+    <ul>
+      <li>чтобы ответить на заявку и уточнить детали заказа;</li>
+      <li>чтобы согласовать оформление, оплату и доставку;</li>
+      <li>чтобы вести учёт заказов и не потерять вашу заявку.</li>
+    </ul>
+    <p>Данные не используются для рекламы, рассылок и не продаются третьим лицам.</p>
+
+    <h2>4. Где хранятся данные</h2>
+    <p>Заявки сохраняются в базе данных Supabase (PostgreSQL) и передаются владельцу уведомлением в Telegram. Доступ к списку заказов закрыт паролем и открыт только владельцу сайта.</p>
+
+    <h2>5. Срок хранения</h2>
+    <p>Заявки хранятся, пока это нужно для выполнения заказа и учёта, но не дольше трёх лет с момента последнего контакта. Вы можете попросить удалить свои данные раньше.</p>
+
+    <h2>6. Ваши права</h2>
+    <p>Вы можете:</p>
+    <ul>
+      <li>узнать, какие ваши данные сохранены;</li>
+      <li>попросить исправить или удалить их;</li>
+      <li>отозвать согласие на обработку.</li>
+    </ul>
+    <p>Для этого напишите в Telegram <a href="https://t.me/alexgg101" target="_blank" rel="noopener">@alexgg101</a>. Запрос выполняется в течение разумного срока, обычно — несколько дней.</p>
+
+    <h2>7. Cookies и аналитика</h2>
+    <p>Сайт не использует cookies, системы аналитики и рекламные трекеры. Шрифты загружаются с Google Fonts; при этом Google может получать технические данные запроса, как при любом обращении к внешнему сайту.</p>
+
+    <h2>8. Согласие</h2>
+    <p>Отправляя заявку, вы подтверждаете, что прочитали эту политику и согласны на обработку указанных данных для ответа на заявку.</p>
+
+    <p class="note">Если вы не хотите указывать данные на сайте, напишите напрямую в Telegram — заявку можно оформить и там.</p>
+  </main>
+
+  <footer>
+    <div class="wrap">© 2026 Акварели бабушки · живопись ручной работы</div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Заказы — Акварели бабушки</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- Экран настройки: пока не заполнены ключи Supabase -->
+  <section class="setup" id="setup" hidden>
+    <div class="setup__card">
+      <p class="eyebrow">Настройка</p>
+      <h1>Админка ещё не подключена</h1>
+      <p>Откройте <code>admin.js</code> и заполните <code>SUPABASE_URL</code> и <code>SUPABASE_ANON_KEY</code> из вашего проекта Supabase. Подробная инструкция — в <code>HANDOFF.md</code>.</p>
+    </div>
+  </section>
+
+  <!-- Вход -->
+  <section class="login" id="login" hidden>
+    <form class="login__card" id="login-form">
+      <p class="eyebrow">Акварели бабушки</p>
+      <h1>Заказы</h1>
+      <p class="login__lead">Вход только для владельца.</p>
+
+      <label class="field">
+        <span>E-mail</span>
+        <input type="email" name="email" autocomplete="username" required>
+      </label>
+
+      <label class="field">
+        <span>Пароль</span>
+        <input type="password" name="password" autocomplete="current-password" required>
+      </label>
+
+      <button class="btn btn--dark" type="submit" id="login-submit">Войти</button>
+      <p class="form-error" id="login-error" role="alert" hidden></p>
+    </form>
+  </section>
+
+  <!-- Список заказов -->
+  <section class="app" id="app" hidden>
+    <header class="app__header">
+      <div>
+        <p class="eyebrow">Акварели бабушки</p>
+        <h1>Заказы</h1>
+      </div>
+      <div class="app__user">
+        <span id="user-email"></span>
+        <button class="link-btn" type="button" id="logout">Выйти</button>
+      </div>
+    </header>
+
+    <div class="stats" id="stats">
+      <div class="stat"><span class="stat__value" data-count="all">0</span><span class="stat__label">Всего</span></div>
+      <div class="stat"><span class="stat__value" data-count="new">0</span><span class="stat__label">Новые</span></div>
+      <div class="stat"><span class="stat__value" data-count="active">0</span><span class="stat__label">В работе</span></div>
+      <div class="stat"><span class="stat__value" data-count="done">0</span><span class="stat__label">Завершены</span></div>
+    </div>
+
+    <div class="toolbar">
+      <label class="field field--search">
+        <span>Поиск</span>
+        <input type="search" id="search" placeholder="Имя, контакт, картина, номер">
+      </label>
+
+      <label class="field field--status">
+        <span>Статус</span>
+        <select id="status-filter">
+          <option value="">Все</option>
+          <option value="new">Новая</option>
+          <option value="confirmed">Подтверждена</option>
+          <option value="paid">Оплачена</option>
+          <option value="shipped">Отправлена</option>
+          <option value="completed">Завершена</option>
+          <option value="cancelled">Отменена</option>
+        </select>
+      </label>
+
+      <button class="btn" type="button" id="export">Экспорт CSV</button>
+      <button class="btn" type="button" id="refresh">Обновить</button>
+    </div>
+
+    <p class="list-note" id="list-note" hidden></p>
+    <div class="orders" id="orders"></div>
+    <p class="empty" id="empty" hidden>Заказов пока нет.</p>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
