@@ -5,32 +5,39 @@
 ## Что внутри
 
 ```
-index.html                     — главная страница и тексты
-privacy.html                   — политика конфиденциальности
-styles.css                     — оформление главной
-script.js                      — работы, контакты, галерея, заявка
-admin.html / admin.css / admin.js — админка заказов (вход по паролю)
-netlify.toml                   — публикация, /api/order, заголовки
+public/                        — только это публикуется на хостинге
+  index.html                   — главная страница и тексты
+  privacy.html                 — политика конфиденциальности
+  styles.css                   — оформление главной
+  script.js                    — работы, контакты, галерея, заявка
+  admin.html / admin.css / admin.js — админка заказов
+  robots.txt                   — закрывает /admin.html от индексации
+  assets/images/full/          — полноразмерные фотографии
+  assets/images/preview/       — превью для галереи
+  assets/favicon.svg           — иконка
+
+netlify.toml                   — publish=public, /api/order, заголовки
 netlify/functions/order.mjs    — приём заявки, запись в Supabase, Telegram
 supabase/schema.sql            — таблица orders и RLS-политики
-robots.txt                     — закрывает /admin.html от индексации
-assets/images/full/            — полноразмерные фотографии
-assets/images/preview/         — превью для галереи
-assets/favicon.svg             — иконка сайта
+README.md                      — эта инструкция
+HANDOFF.md                     — контекст для следующей сессии
+
 photo1…photo7.jpg              — исходники, в git и на хостинг не попадают
 ```
+
+`HANDOFF.md`, `README.md`, `supabase/` и `netlify/` остаются в корне и наружу не публикуются.
 
 ## Локальный просмотр
 
 ```powershell
-python -m http.server 8000
+python -m http.server 8000 --directory public
 ```
 
 Открыть http://localhost:8000. Без Netlify форма работает в резервном режиме: копирует текст заявки и предлагает отправить его в Telegram. Это нормально.
 
 ## Что заменить перед публикацией
 
-1. **Контакты** — начало `script.js`:
+1. **Контакты** — начало `public/script.js`:
 
 ```js
 const CONTACTS = {
@@ -38,7 +45,7 @@ const CONTACTS = {
 };
 ```
 
-2. **Ключи Supabase для админки** — начало `admin.js`:
+2. **Ключи Supabase для админки** — начало `public/admin.js`:
 
 ```js
 const SUPABASE_URL = "https://ВАШ-ПРОЕКТ.supabase.co";
@@ -54,36 +61,39 @@ TELEGRAM_BOT_TOKEN=
 TELEGRAM_CHAT_ID=
 ```
 
-`service_role` и токен бота хранятся только в Netlify. В `script.js` и `admin.js` их быть не должно.
+`service_role` и токен бота хранятся только в Netlify. В `public/script.js` и `public/admin.js` их быть не должно.
 
 ## Работы и цены
 
-Массив `ARTWORKS` в `script.js` — источник данных для галереи. Цены и названия для серверной проверки продублированы в `netlify/functions/order.mjs` (`CATALOG`). **При изменении цены правьте оба места**, иначе сервер запишет старую цену.
+Массив `ARTWORKS` в `public/script.js` — источник данных для галереи. Цены и названия для серверной проверки продублированы в `netlify/functions/order.mjs` (`CATALOG`). **При изменении цены правьте оба места**, иначе сервер запишет старую цену.
 
 Сейчас: 7 работ, A4, 1000–1200 ₽.
 
 ## Как добавить новую картину
 
-1. Положите фотографию в `assets/images/full/` (например, `painting8.jpg`).
-2. Сделайте превью ~800 px по длинной стороне в `assets/images/preview/painting8.jpg`.
-3. Добавьте объект в `ARTWORKS` в `script.js`.
+1. Положите фотографию в `public/assets/images/full/` (например, `painting8.jpg`).
+2. Сделайте превью ~800 px по длинной стороне в `public/assets/images/preview/painting8.jpg`.
+3. Добавьте объект в `ARTWORKS` в `public/script.js`.
 4. Добавьте работу в `CATALOG` в `netlify/functions/order.mjs`.
-5. Обновите счётчик «07» в `index.html` и `ARTWORKS.length` подставится в галерее автоматически.
+5. Обновите счётчик «07» в `public/index.html`; число в галерее подставится из `ARTWORKS.length`.
 
 ## Публикация: GitHub + Netlify
 
 ```powershell
 cd C:\Users\pinea\Desktop\folder1
-git init
 git add .
-git commit -m "Акварели бабушки: сайт, заявки, админка"
-git branch -M main
+git commit -m "Описание изменения"
+git push
+```
+
+Первый пуш:
+
+```powershell
 git remote add origin https://github.com/ВАШ-АККАУНТ/akvareli-babushki.git
 git push -u origin main
 ```
 
-Затем в Netlify: **Add new site → Import an existing project → GitHub** → выбрать репозиторий.
-Build command — пусто, Publish directory — `.`. Functions подхватятся из `netlify.toml`.
+Затем в Netlify: **Add new site → Import an existing project → GitHub** → выбрать репозиторий. Build command — пусто, publish directory — `public` (уже задан в `netlify.toml`).
 
 После первого деплоя добавить переменные окружения и нажать **Deploys → Trigger deploy → Deploy site**.
 
@@ -93,7 +103,7 @@ Build command — пусто, Publish directory — `.`. Functions подхва�
 2. SQL Editor → выполнить `supabase/schema.sql`.
 3. Authentication → Users → Add user: e-mail и пароль владельца.
 4. Authentication → Providers → Email: выключить публичную регистрацию (Enable Sign Ups).
-5. Project Settings → API: скопировать Project URL и `anon public` key в `admin.js`, `service_role` — в Netlify.
+5. Project Settings → API: скопировать Project URL и `anon public` key в `public/admin.js`, `service_role` — в Netlify.
 
 ## Telegram-бот
 
@@ -131,8 +141,8 @@ Build command — пусто, Publish directory — `.`. Functions подхва�
 ## Проверки
 
 ```powershell
-node --check script.js
-node --check admin.js
+node --check public/script.js
+node --check public/admin.js
 node --check netlify/functions/order.mjs
 ```
 

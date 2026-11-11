@@ -3,7 +3,7 @@
 **Дата:** 12.11.2026
 **Корень проекта:** `C:\Users\pinea\Desktop\folder1`
 **Статус:** сайт, приём заявок и админка готовы в коде. Осталось подключить аккаунты GitHub, Netlify, Supabase и бота, затем проверить сквозной сценарий на публичной ссылке.
-**Git:** репозиторий инициализируется локально; удалённого репозитория пока нет.
+**Git:** локальный репозиторий создан, коммиты есть; удалённого репозитория пока нет.
 
 ---
 
@@ -30,21 +30,22 @@
 ### 2.1. Структура проекта
 
 ```
-index.html                      — главная: hero, галерея, «О работах», покупка, контакты
-privacy.html                    — политика конфиденциальности
-styles.css                      — оформление главной и диалогов
-script.js                       — ARTWORKS, CONTACTS, галерея, лайтбокс, заявка
-admin.html / admin.css / admin.js — админка заказов
-netlify.toml                    — publish, functions, redirect /api/order, заголовки
+public/                         — только эта папка публикуется на хостинге
+  index.html                    — главная: hero, галерея, «О работах», покупка, контакты
+  privacy.html                  — политика конфиденциальности
+  styles.css                    — оформление главной и диалогов
+  script.js                     — ARTWORKS, CONTACTS, галерея, лайтбокс, заявка
+  admin.html / admin.css / admin.js — админка заказов
+  robots.txt                    — Disallow /admin.html
+  assets/favicon.svg            — иконка
+  assets/images/full/painting1–7.jpg     — полноразмерные изображения
+  assets/images/preview/painting1–7.jpg  — превью для галереи
+netlify.toml                    — publish=public, functions, redirect /api/order
 netlify/functions/order.mjs     — серверная функция приёма заявки
 supabase/schema.sql             — таблица orders, индексы, триггер, RLS
-robots.txt                      — Disallow /admin.html
-.gitignore                      — исключает photo1–7.jpg, .env, node_modules
 README.md                       — инструкция по правкам и публикации
 HANDOFF.md                      — этот файл
-assets/favicon.svg              — иконка
-assets/images/full/painting1–7.jpg     — полноразмерные изображения
-assets/images/preview/painting1–7.jpg  — превью для галереи
+.gitignore                      — исключает photo1–7.jpg, .env, node_modules
 photo1–7.jpg                    — исходники, в git не попадают
 ```
 
@@ -66,7 +67,7 @@ photo1–7.jpg                    — исходники, в git не попад
 
 Цены продублированы в двух местах:
 
-- `script.js` → `ARTWORKS` (что видит покупатель);
+- `public/script.js` → `ARTWORKS` (что видит покупатель);
 - `netlify/functions/order.mjs` → `CATALOG` (что записывается в базу).
 
 **При изменении цены править оба файла.** Сервер намеренно игнорирует цену из запроса.
@@ -88,7 +89,7 @@ photo1–7.jpg                    — исходники, в git не попад
 1. Картина (обязательный select), имя, контакт, комментарий, обязательное согласие на обработку данных, honeypot.
 2. Результат: номер заявки либо резервный режим с текстом для Telegram.
 
-Логика `script.js`:
+Логика `public/script.js`:
 
 1. `POST /api/order` с `artworkId`, `name`, `contact`, `comment`, `consent`, `website`.
 2. Успех → «Заявка принята», номер вида `№0042`, кнопки Telegram и «Скопировать текст».
@@ -132,10 +133,10 @@ updated_at timestamptz not null default now()
 - `select` и `update` — только роли `authenticated`;
 - политики `insert` нет: вставка идёт только через `service_role`, который обходит RLS.
 
-### 2.7. Админка `admin.html`
+### 2.7. Админка `public/admin.html`
 
 - Вход по e-mail/паролю Supabase Auth, выход.
-- Если `SUPABASE_URL`/`SUPABASE_ANON_KEY` в `admin.js` пустые — экран «Админка ещё не подключена», а не белый экран.
+- Если `SUPABASE_URL`/`SUPABASE_ANON_KEY` в `public/admin.js` пустые — экран «Админка ещё не подключена», а не белый экран.
 - Статистика: всего / новые / в работе / завершены.
 - Поиск по номеру, картине, имени, контакту, комментарию и заметке; фильтр по статусу.
 - Смена статуса сразу сохраняется в Supabase; есть toast.
@@ -148,7 +149,7 @@ updated_at timestamptz not null default now()
 
 ### 2.8. Политика конфиденциальности
 
-`privacy.html`: какие данные собираются, зачем, где хранятся (Supabase + Telegram), срок хранения, права, отсутствие cookies и аналитики, контакт для удаления данных. Согласие в форме обязательно.
+`public/privacy.html`: какие данные собираются, зачем, где хранятся (Supabase + Telegram), срок хранения, права, отсутствие cookies и аналитики, контакт для удаления данных. Согласие в форме обязательно.
 
 ---
 
@@ -193,8 +194,8 @@ Supabase
 ### 4.1. Синтаксис
 
 ```powershell
-node --check script.js
-node --check admin.js
+node --check public/script.js
+node --check public/admin.js
 node --check netlify/functions/order.mjs
 ```
 
@@ -209,7 +210,7 @@ node --check netlify/functions/order.mjs
 - форма: без согласия не отправляется, фокус уходит на checkbox;
 - резервный режим: заголовок «Заявка готова», текст скопирован, toast, пустой номер не показывается;
 - успешный ответ API (замокан): «Заявка принята», `Заявка №0042`;
-- `privacy.html` открывается, вёрстка не ломается.
+- `public/privacy.html` открывается, вёрстка не ломается.
 
 ### 4.3. Админка (мок Supabase)
 
@@ -244,7 +245,7 @@ node --check netlify/functions/order.mjs
 8. **Мёртвые ссылки WhatsApp/e-mail.** Удалены, оставлен только Telegram.
 9. **Заказ уходил с первой картиной по умолчанию.** Добавлен обязательный placeholder в select.
 10. **Кириллица в PowerShell выглядит мусором.** Это кодировка консоли; файлы в UTF-8, в браузере всё корректно.
-11. **Админка показывала экран настройки поверх приложения.** У `.setup`/`.login` задан `display: grid`, который перебивал атрибут `hidden`. Решение: глобальное правило `[hidden] { display: none !important; }` в `admin.css` и `styles.css`. Заодно перестал показываться пустой блок номера заявки.
+11. **Админка показывала экран настройки поверх приложения.** У `.setup`/`.login` задан `display: grid`, который перебивал атрибут `hidden`. Решение: глобальное правило `[hidden] { display: none !important; }` в `public/admin.css` и `public/styles.css`. Заодно перестал показываться пустой блок номера заявки.
 12. **Огромная пустота в мобильной админке.** У `.field--search` был `flex: 1 1 260px`; в колоночном flex это становилось высотой 260 px. Решение: на ≤760 px `flex: 1 1 auto`.
 
 ---
@@ -255,7 +256,7 @@ node --check netlify/functions/order.mjs
 
 ```powershell
 cd C:\Users\pinea\Desktop\folder1
-python -m http.server 8000
+python -m http.server 8000 --directory public
 ```
 
 Открыть http://localhost:8000. Форма должна уйти в резервный режим с текстом для Telegram — это ожидаемо без Netlify.
@@ -279,7 +280,7 @@ git push -u origin main
 
 1. https://app.netlify.com → **Add new site → Import an existing project → GitHub**.
 2. Выбрать `akvareli-babushki`.
-3. Build command — пусто, publish directory — `.`.
+3. Build command — пусто, publish directory — `public` (уже задан в `netlify.toml`).
 4. Deploy.
 5. Получить ссылку `https://<имя>.netlify.app`. Имя можно изменить: Site configuration → Change site name.
 6. Проверить, что сайт открылся, картинки и шрифты загрузились.
@@ -291,9 +292,9 @@ git push -u origin main
 3. Authentication → Users → Add user: e-mail владельца + пароль.
 4. Authentication → Providers → Email: **выключить** Enable Sign Ups, включить Email/Password.
 5. Project Settings → API:
-   - Project URL и `anon public` → в `admin.js` (два места в начале файла);
+   - Project URL и `anon public` → в `public/admin.js` (два места в начале файла);
    - `service_role` — **только** в переменные Netlify, не в код.
-6. Закоммитить `admin.js` с URL и anon key (это безопасно при включённом RLS).
+6. Закоммитить `public/admin.js` с URL и anon key (это безопасно при включённом RLS).
 
 ### Шаг 5. Создать Telegram-бота
 
@@ -358,7 +359,7 @@ TELEGRAM_CHAT_ID=123456789
 - [ ] Заявка сохраняется в Supabase и приходит в Telegram.
 - [ ] Покупатель видит номер заявки.
 - [ ] `/admin.html` закрыт входом; видны заказы, статусы, заметки, CSV.
-- [ ] Форма требует согласие; есть `privacy.html`.
+- [ ] Форма требует согласие; есть `public/privacy.html`.
 - [ ] Нет ошибок в консоли и горизонтального скролла на 320/390 px.
 - [ ] Владелец получил ссылку и доступы.
 
@@ -369,15 +370,15 @@ TELEGRAM_CHAT_ID=123456789
 ```powershell
 # локальный просмотр
 cd C:\Users\pinea\Desktop\folder1
-python -m http.server 8000
+python -m http.server 8000 --directory public
 
 # синтаксис
-node --check script.js
-node --check admin.js
+node --check public/script.js
+node --check public/admin.js
 node --check netlify/functions/order.mjs
 
 # поиск цен и названий
-Select-String -Path script.js,netlify/functions/order.mjs -Pattern "price:|price ="
+Select-String -Path public/script.js,netlify/functions/order.mjs -Pattern "price:|price ="
 
 # git
 git status
