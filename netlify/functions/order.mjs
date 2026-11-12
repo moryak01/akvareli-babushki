@@ -3,7 +3,7 @@
    Netlify Function (Node 20, ESM).
 
    Переменные окружения (Netlify → Site settings → Environment variables):
-     SUPABASE_URL
+     SUPABASE_DB_URL
      SUPABASE_SERVICE_ROLE_KEY
      TELEGRAM_BOT_TOKEN
      TELEGRAM_CHAT_ID
@@ -84,7 +84,7 @@ function parseBody(event) {
 }
 
 async function saveOrder(row) {
-  const url = process.env.SUPABASE_URL;
+  const url = process.env.SUPABASE_DB_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   const response = await fetch(`${url}/rest/v1/orders`, {
@@ -189,7 +189,7 @@ export async function handler(event) {
     return json(400, { ok: false, error: "Нужно согласие на обработку данных." });
   }
 
-  if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+  if (!process.env.SUPABASE_DB_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
     console.error("order: SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY are not set");
     return json(500, { ok: false, error: "Приём заявок временно недоступен." });
   }
