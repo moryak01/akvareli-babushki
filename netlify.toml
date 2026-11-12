@@ -1,11 +1,13 @@
 [build]
   publish = "public"
-  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "20"
 
 [functions]
+  directory = "netlify/functions"
   node_version = "20"
 
-# /api/order -> netlify/functions/order.mjs
 [[redirects]]
   from = "/api/order"
   to = "/.netlify/functions/order"
