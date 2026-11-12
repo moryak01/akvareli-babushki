@@ -8,8 +8,8 @@
    3. service_role key сюда НЕ вставлять.
    ========================================================= */
 
-const SUPABASE_URL = "";      // сюда вставить Project URL из Supabase (https://xxxx.supabase.co)
-const SUPABASE_ANON_KEY = ""; // сюда вставить Publishable key из Supabase (sb_publishable_...)
+const SUPABASE_URL = "https://jbtkcgdpkkcvfeixmsvm.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_er22aqWC0z4UpOD9RYkUGA_EVo-vo4_";
 
 const STATUS_LABELS = {
   new: "Новая",
