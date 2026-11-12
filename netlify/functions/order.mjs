@@ -84,7 +84,7 @@ function parseBody(event) {
 }
 
 async function saveOrder(row) {
-  const url = process.env.SUPABASE_DB_URL;
+  const url = (process.env.SUPABASE_DB_URL || "").replace(/\/rest\/v1\/?$/, "");
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   const response = await fetch(`${url}/rest/v1/orders`, {
