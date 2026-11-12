@@ -6,7 +6,6 @@
 
 [functions]
   directory = "netlify/functions"
-  node_version = "20"
 
 [[redirects]]
   from = "/api/order"
