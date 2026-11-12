@@ -8,8 +8,8 @@
    3. service_role key сюда НЕ вставлять.
    ========================================================= */
 
-const SUPABASE_URL = "";      // например https://abcdefgh.supabase.co
-const SUPABASE_ANON_KEY = ""; // eyJhbGciOi... (anon public)
+const SUPABASE_URL = "https://jbtkcgdpkkcvfeixmsvm.supabase.co/rest/v1/";      // например https://abcdefgh.supabase.co
+const SUPABASE_ANON_KEY = "sb_publishable_er22aqWC0z4UpOD9RYkUGA_EVo-vo4_"; // eyJhbGciOi... (anon public)
 
 const STATUS_LABELS = {
   new: "Новая",
